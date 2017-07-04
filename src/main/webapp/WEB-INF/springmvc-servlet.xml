@@ -112,52 +112,34 @@
 	    </property>
 	</bean>
 
-	<mvc:interceptors>
+	<!--<mvc:interceptors>
 	    <mvc:interceptor>
 	        <mvc:mapping path="/**"/>
-	        <bean class="com.dangdang.digital.interceptor.SecurityInterceptor">
+	        <bean class="com.business.base.interceptor.SecurityInterceptor">
 	            <property name="excludedUrls">
 	                <list>
 	                    <value>/login/securitySession.go</value>
 	                    <value>/login/index.go</value>
 	                    <value>/login/login.go</value>
-	                    <value>/captcha/cimge.go</value>
-	                    <value>/audioSource/add.go</value>
-	                    <value>/audioSource/update.go</value>
-	                    <value>/audioSource/addChapter.go</value>
-	                    <value>/audioSource/updateChapter.go</value>
-	                    <value>/audioSource/delete.go</value>
-	                    <value>/audioSource/upPic.go</value>
-	                    <value>/audioSource/insertDd.go</value>
-	                    <value>/epub/queryEpubProductIdList.go</value>
-	                    <value>/epub/updateMediaHeat.go</value>
+						<value>/index/welcome.go</value>
+						<value>/login/logout.go</value>
 	                </list>
 	            </property>
 	        </bean>
 	    </mvc:interceptor>
 	     <mvc:interceptor>
 	        <mvc:mapping path="/**"/>
-	        <bean class="com.dangdang.digital.interceptor.PreviledgeInterceptor">
+	        <bean class="com.business.base.interceptor.PreviledgeInterceptor">
 	            <property name="excludedUrls">
 	                <list>
 	                    <value>/login/securitySession.go</value>
 	                    <value>/login/index.go</value>
 	                    <value>/login/login.go</value>
-	                    <value>/captcha/cimge.go</value>
 	                    <value>/index/welcome.go</value>
 	                    <value>/login/logout.go</value>
-	                    <value>/audioSource/add.go</value>
-	                    <value>/audioSource/update.go</value>
-	                    <value>/audioSource/addChapter.go</value>
-	                    <value>/audioSource/updateChapter.go</value>
-	                    <value>/audioSource/delete.go</value>
-	                    <value>/audioSource/upPic.go</value>
-	                    <value>/audioSource/insertDd.go</value>
-	                    <value>/epub/queryEpubProductIdList.go</value>
-	                    <value>/epub/updateMediaHeat.go</value>
 	                </list>
 	            </property>
 	        </bean>
 	    </mvc:interceptor>
-	</mvc:interceptors>
+	</mvc:interceptors>-->
 </beans>

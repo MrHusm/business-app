@@ -26,7 +26,7 @@
 	<!--</bean>-->
 
 	<!-- 使用annotation 自动注册bean -->
-	<context:component-scan base-package="com.dangdang.search,com.dangdang.digital,com.dangdang.supplier,com.dangdang.bookbar,com.dangdang.comment,com.dangdang.authority,com.dangdang.account,com.dangdang.tag,com.dangdang.userblacklist,com.dangdang.ucenter,com.dangdang.emobile,com.dangdang.bi,com.dangdang.readplan,com.dangdang.promotionV2,com.dangdang.pagemanage,com.dangdang.additionalpricespurchase" annotation-config="true">
+	<context:component-scan base-package="com.business.ucenter" annotation-config="true">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 	
@@ -35,14 +35,13 @@
     <task:executor id="taskExecutor" pool-size="5"/>  
     <task:scheduler id="taskScheduler" pool-size="10" />
 
-	<bean class="com.dangdang.digital.system.SpringContextHolder" lazy-init="false" />
+	<bean class="com.business.base.system.SpringContextHolder" lazy-init="false" />
 
 	<!-- 加载配置文件 -->
-	<bean id="propertyMananger" class="com.dangdang.digital.system.DecryptPropertyPlaceholderConfigurer">
+	<bean id="propertyMananger" class="com.business.base.system.DecryptPropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<value>config.properties</value>
-				<value>mail-config.properties</value>
 				<value>api-config.properties</value>
 			</list>
 		</property>
@@ -66,491 +65,54 @@
 		<property name="checkoutTimeout" value="5000" />
 		<property name="preferredTestQuery" value="SELECT 1" />
 	</bean>
-	
-	<!--  emobile 数据库配置  start -->
-		<bean id="emobile_master_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${digital.emobile.master.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${digital.emobile.master.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${digital.emobile.master.jdbc.password}</value>
-		</property>
-	</bean>
 
-	<!-- emobile 配置从库数据源 -->
-	<bean id="emobile_slave_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${digital.emobile.slave.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${digital.emobile.slave.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${digital.emobile.slave.jdbc.password}</value>
-		</property>
-	</bean>
-	<bean id="emobile_slave_jdbc_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl" value="${digital.emobile.slave.jdbc.url}"/>
-		<property name="user" value="${digital.emobile.slave.jdbc.username}"/>
-		<property name="password" value="${digital.emobile.slave.jdbc.password}"/>
-	</bean>
-	<bean id="emobileJdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
-		<constructor-arg type="javax.sql.DataSource" ref="emobile_slave_jdbc_dataSource" />
-	</bean>
-	<!-- 配置事物数据库 -->
-	<bean id="emobile_master_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="emobile_master_dataSource" />
-		<property name="configLocation" value="classpath:emobile/sql-map-config.xml" />
-		<property name="mapperLocations" value="classpath*:emobile/sqlmap/*.xml" />
-	</bean>
-	<bean id="emobile_slave_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="emobile_slave_dataSource" />
-		<property name="configLocation" value="classpath:emobile/sql-map-config.xml" />
-		<property name="mapperLocations" value="classpath*:emobile/sqlmap/*.xml" />
-	</bean>
 
-	<bean id="emobile_master_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="emobile_master_sqlSessionFactory" />
-	</bean>
-	
-	<bean id="emobile_slave_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="emobile_slave_sqlSessionFactory" />
-	</bean>
-	
-	<bean id="emobileTransactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="emobile_master_dataSource" />
-	</bean>
-	
-	<!--  emobile 数据库配置  end  -->
-	
-	
-	<!-- promotion数据库连接池配置 start-->
-	<!-- promotion配置主库数据源 -->
-	<bean id="promotion_master_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${promotion.master.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${promotion.master.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${promotion.master.jdbc.password}</value>
-		</property>
-	</bean>
 
-	<!--&lt;!&ndash; ucenter 配置从库数据源 &ndash;&gt;-->
-	<bean id="promotion_slave_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${promotion.slave.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${promotion.slave.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${promotion.slave.jdbc.password}</value>
-		</property>
-	</bean>
-	<!--&lt;!&ndash; 配置事物数据库 &ndash;&gt;-->
-	<bean id="promotion_master_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="promotion_master_dataSource" />
-		<property name="configLocation" value="classpath:sql-map-config.xml" />
-		<property name="mapperLocations" value="classpath*:promotion/sqlmap/*.xml" />
-	</bean>
-	<bean id="promotion_slave_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="promotion_slave_dataSource" />
-		<property name="configLocation" value="classpath:sql-map-config.xml" />
-		<property name="mapperLocations" value="classpath*:promotion/sqlmap/*.xml" />
-	</bean>
-
-	<bean id="promotion_master_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="promotion_master_sqlSessionFactory" />
-	</bean>
-
-	<bean id="promotion_slave_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="promotion_slave_sqlSessionFactory" />
-	</bean>
-
-	<bean id="promotionTransactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="promotion_master_dataSource" />
-	</bean>
-	<!-- promotion数据库连接池配置 end-->
-
-	<!-- ucenter数据库连接池配置 start-->
-	<!-- ucenter配置主库数据源 -->
-	<bean id="ucenter_master_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${digital.ucenter.master.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${digital.ucenter.master.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${digital.ucenter.master.jdbc.password}</value>
-		</property>
-	</bean>
-
-	<!-- ucenter 配置从库数据源 -->
-	<bean id="ucenter_slave_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${digital.ucenter.slave.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${digital.ucenter.slave.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${digital.ucenter.slave.jdbc.password}</value>
-		</property>
-	</bean>
-	<!-- 配置事物数据库 -->
-	<bean id="ucenter_master_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="ucenter_master_dataSource" />
-		<property name="configLocation" value="classpath:sql-map-config.xml" />
-		<property name="mapperLocations" value="classpath*:ucenter/sqlmap/*.xml" />
-	</bean>
-	<bean id="ucenter_slave_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="ucenter_slave_dataSource" />
-		<property name="configLocation" value="classpath:sql-map-config.xml" />
-		<property name="mapperLocations" value="classpath*:ucenter/sqlmap/*.xml" />
-	</bean>
-
-	<bean id="ucenter_master_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="ucenter_master_sqlSessionFactory" />
-	</bean>
-
-	<bean id="ucenter_slave_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="ucenter_slave_sqlSessionFactory" />
-	</bean>
-
-	<bean id="ucenterTransactionManager"
-		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="ucenter_master_dataSource" />
-	</bean>
-	<!-- ucenter数据库连接池配置 end-->
 	
 	<!-- 配置主库数据源 -->
-	<bean id="master_dataSource" parent="parentDataSource">
+	<bean id="business_dataSource" parent="parentDataSource">
 		<property name="jdbcUrl">
-			<value>${digital.master.jdbc.url}</value>
+			<value>${business.jdbc.url}</value>
 		</property>
 		<property name="user">
-			<value>${digital.master.jdbc.username}</value>
+			<value>${business.jdbc.username}</value>
 		</property>
 		<property name="password">
-			<value>${digital.master.jdbc.password}</value>
+			<value>${business.jdbc.password}</value>
 		</property>
 	</bean>
 
-	<!-- 配置从库数据源 -->
-	<bean id="slave_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${digital.slave.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${digital.slave.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${digital.slave.jdbc.password}</value>
-		</property>
-	</bean>
-	
-	<!-- 配置供应商库数据源 -->
-	<bean id="supplier_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${supplier.master.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${supplier.master.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${supplier.master.jdbc.password}</value>
-		</property>
-	</bean>
-	
-	<!-- 配置书吧库数据源 -->
-	<bean id="bookbar_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${bookbar.master.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${bookbar.master.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${bookbar.master.jdbc.password}</value>
-		</property>
-	</bean>
-	<!-- 配置评论库数据源 -->
-	<bean id="comment_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${base_comment.master.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${base_comment.master.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${base_comment.master.jdbc.password}</value>
-		</property>
-	</bean>
-	<!-- 配置BI库数据源 -->
-	<bean id="bi_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${bi.slave.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${bi.slave.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${bi.slave.jdbc.password}</value>
-		</property>
-	</bean>
-	<!-- 配置权限库数据源 -->
-	<bean id="authority_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${base.authority.master.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${base.authority.master.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${base.authority.master.jdbc.password}</value>
-		</property>
-	</bean>
-	<!-- 配置活动库数据源 -->
-	<bean id="account_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${account.master.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${account.master.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${account.master.jdbc.password}</value>
-		</property>
-	</bean>
+
+
+
  	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="master_dataSource" />
+		<property name="dataSource" ref="business_dataSource" />
 	</bean>  
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
-	<bean id="supplierTransactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="supplier_dataSource" />
-	</bean>  
-	
-	<tx:annotation-driven transaction-manager="supplierTransactionManager" />
-	
-	<bean id="bookbarTransactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="bookbar_dataSource" />
-	</bean>  
 
-	<tx:annotation-driven transaction-manager="bookbarTransactionManager" />
-	<bean id="commentTransactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="comment_dataSource" />
-	</bean>
-	<tx:annotation-driven transaction-manager="commentTransactionManager" />
-	<bean id="biTransactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="bi_dataSource" />
-	</bean>
-	<tx:annotation-driven transaction-manager="biTransactionManager" />
-	
-	<bean id="authorityTransactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="authority_dataSource" />
-	</bean>
-	<tx:annotation-driven transaction-manager="authorityTransactionManager" />
-	
-	<bean id="accountTransactionManager" 
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="account_dataSource" />
-	</bean>
-	<tx:annotation-driven transaction-manager="accountTransactionManager" />
 	<!-- 配置事物数据库 -->
-	<bean id="master_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="master_dataSource" />
+	<bean id="business_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="business_dataSource" />
 		<property name="configLocation" value="classpath:sql-map-config.xml" />
-		<property name="mapperLocations" value="classpath*:sqlmap/*.xml" />
+		<property name="mapperLocations" value="classpath*:sqlmap/*/*.xml" />
 	</bean>
 
 	<bean id="master_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="master_sqlSessionFactory" />
+		<constructor-arg index="0" ref="business_sqlSessionFactory" />
 	</bean>
 
-	<!-- 配置供应商数据库 -->
-	<bean id="supplier_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="supplier_dataSource" />
-		<property name="configLocation" value="classpath:sql-map-config.xml" />
-		<property name="mapperLocations" value="classpath*:supplier/sqlmap/*.xml" />
-	</bean>
 
-	<bean id="supplier_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="supplier_sqlSessionFactory" />
-	</bean>
-
-	<!-- 配置书吧数据库 -->
-	<bean id="bookbar_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="bookbar_dataSource" />
-		<property name="mapperLocations" value="classpath*:bookbar/sqlmap/*.xml" />
-	</bean>
-
-	<bean id="bookbar_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="bookbar_sqlSessionFactory" />
-	</bean>
 	
-	
-	
-	<!-- 配置查询数据库 start  lvxiang  -->
 
-	<!-- 配置书吧从库数据源 -->
-	<bean id="bar_slave_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${bookbar.master.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${bookbar.master.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${bookbar.master.jdbc.password}</value>
-		</property>
-	</bean>
-
-	<!-- 配置查询数据库 -->
-	<bean id="bar_slave_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="bar_slave_dataSource" />
-		<property name="configLocation" value="classpath:sql-map-config.xml" />
-		<property name="mapperLocations" value="classpath*:sqlmap/*.xml" />
-	</bean>
-
-	<bean id="bar_slave_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="bar_slave_sqlSessionFactory" />
-	</bean>
-	<!-- 配置查询数据库  end  lvxiang -->
-	
-	
-	
-	<!-- 配置评论数据库 -->
-	<bean id="comment_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="comment_dataSource" />
-		<property name="mapperLocations" value="classpath*:comment/sqlmap/*.xml" />
-	</bean>
-
-	<bean id="comment_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="comment_sqlSessionFactory" />
-	</bean>
-	<!-- 配置bi数据库 -->
-	<bean id="bi_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="bi_dataSource" />
-		<property name="mapperLocations" value="classpath*:bi/sqlmap/*.xml" />
-	</bean>
-
-	<bean id="bi_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="bi_sqlSessionFactory" />
-	</bean>
-<!-- 配置digital数据库 -->
-	<bean id="digest_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="slave_dataSource" />
-		<property name="mapperLocations" value="classpath*:tag/sqlmap/*.xml" />
-	</bean>
-	<bean id="degest_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="digest_sqlSessionFactory" />
-	</bean>	
-	
-	<!-- 配置活动数据库 -->
-	<bean id="account_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="account_dataSource" />
-		<property name="mapperLocations" value="classpath*:account/sqlmap/*.xml" />
-	</bean>
-
-	<bean id="account_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="account_sqlSessionFactory" />
-	</bean>
-			<!-- 配置标签数据库 -->
-	<bean id="tag_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="comment_dataSource" />
-		<property name="mapperLocations" value="classpath*:tag/sqlmap/*.xml" />
-	</bean>
-
-	<bean id="tag_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="tag_sqlSessionFactory" />
-	</bean>
-	<!-- 配置权限数据库 -->
-	<bean id="authority_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="authority_dataSource" />
-		<property name="mapperLocations" value="classpath*:authority/sqlmap/*.xml" />
-	</bean>
-
-	<bean id="authority_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="authority_sqlSessionFactory" />
-	</bean>			
-	<!-- 配置查询数据库 -->
-	<bean id="slave_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="slave_dataSource" />
-		<property name="configLocation" value="classpath:sql-map-config.xml" />
-		<property name="mapperLocations" value="classpath*:sqlmap/*.xml" />
-	</bean>
-
-	<bean id="slave_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="slave_sqlSessionFactory" />
-	</bean>
 	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="master_dataSource"/>
+        <property name="dataSource" ref="business_dataSource"/>
     </bean>
     
-    <bean id="jdbcQueryTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="slave_dataSource"/>
-    </bean>
-     <bean id="supplierJdbcQueryTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="supplier_dataSource"/>
-    </bean>
-    <bean id="biJdbcQueryTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="bi_dataSource"/>
-    </bean>
-   	<bean id="comparePriceDataSource" parent="parentDataSource">
-		<property name="jdbcUrl" value="${comprice.jdbc.url}"/>
-		<property name="user" value="${comprice.jdbc.username}"/>
-		<property name="password" value="${comprice.jdbc.password}"/>
-	</bean> 
-	
-	<bean id="simpleJdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
-        <constructor-arg type="javax.sql.DataSource" ref="comparePriceDataSource" />
-    </bean>
 
-
-	<!-- ecms 4.0 数据源 -->
-	<bean id="ecms_master_dataSource" parent="parentDataSource">
-		<property name="jdbcUrl">
-			<value>${ecms.master.jdbc.url}</value>
-		</property>
-		<property name="user">
-			<value>${ecms.master.jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${ecms.master.jdbc.password}</value>
-		</property>
-	</bean>
-	<bean id="ecms_master_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="ecms_master_dataSource" />
-		<property name="configLocation" value="classpath:sql-map-config.xml" />
-		<property name="mapperLocations" value="classpath*:sqlmap/*.xml" />
-	</bean>
-
-	<bean id="ecms_master_sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="ecms_master_sqlSessionFactory" />
-	</bean>
-	<bean id="ecmsTransactionManager"
-		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="ecms_master_dataSource" />
-	</bean>
-	<tx:annotation-driven transaction-manager="ecmsTransactionManager" />
 
 
 	<!-- 文件上传配置 -->
@@ -558,46 +120,8 @@
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
-	
-	<!-- task : upToCdn -->
-	<bean id="picUpCdnRejectedExecutionHandler" class="com.dangdang.digital.listenbook.handler.PicUpCdnRejectedExecutionHandler"></bean>
-    <bean id="picUpCdnThreadPoolExecutorService" class="com.dangdang.digital.listenbook.service.PicUpCdnThreadPoolExecutorService">
-		<constructor-arg index="0">
-		  <value>8</value>
-		</constructor-arg>
-		<constructor-arg index="1">
-		  <value>16</value>
-		</constructor-arg>
-		<constructor-arg index="2">
-		  <value>60</value>
-		</constructor-arg>
-		<constructor-arg index="3">
-		  <value>20000</value>
-		</constructor-arg>
-		<constructor-arg index="4">
-		  <ref bean="picUpCdnRejectedExecutionHandler" />
-		</constructor-arg>
-    </bean>
-    
-    <!-- PcReader Listener -->
-    <bean id="mediaPcReaderListener" class="com.dangdang.digital.listener.MediaPcReaderListener">
-    	<constructor-arg index="0">
-		  <value>${pcreader.syn.static.resource.corepoolsize}</value>
-		</constructor-arg>
-		<constructor-arg index="1">
-		  <value>${pcreader.syn.static.resource.period}</value>
-		</constructor-arg>
-    </bean>
 
-	<!-- H5Static Listener -->
-	<bean id="h5StaticListener" class="com.dangdang.digital.listener.H5StaticListener">
-		<constructor-arg index="0">
-			<value>${h5static.syn.static.resource.corepoolsize}</value>
-		</constructor-arg>
-		<constructor-arg index="1">
-			<value>${h5static.syn.static.resource.period}</value>
-		</constructor-arg>
-	</bean>
+
     
     <bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
@@ -608,41 +132,4 @@
 			</list>
 		</property>
 	</bean>
-
-	<bean id="rankQueryMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.dangdang.digital.dao.IMediaNewRankDao" />
-		<property name="sqlSessionFactory" ref="master_sqlSessionFactory"/>
-		<property name="sqlSessionTemplate" ref="master_sqlSession" />
-	</bean>
-
-	<!-- redis配置 -->
-	<import resource="classpath*:/config/redis_config.xml" />
-	<!-- dubbo接口 -->
-	<import resource="classpath*:/config/spring_other_dubbo.xml" />
-	<!-- rabbitmq -->
-	<import resource="classpath*:/config/spring_rabbitmq.xml" />
-	<!-- mongo配置 -->
-	<import resource="classpath*:/config/spring-mongodb.xml" />
-	
-	<!-- 异步线程池 (上传图片)-->
-	<bean id="taskExecutorForUploadPic"
-		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<!-- 核心线程数 -->
-		<property name="corePoolSize" value="256" />
-		<!-- 最大线程数 -->
-		<property name="maxPoolSize" value="1024" />
-		<!-- 队列最大长度 -->
-		<property name="queueCapacity" value="10000" />
-		<!-- 线程池维护线程所允许的空闲时间 -->
-		<property name="keepAliveSeconds" value="60" />
-		<!-- 线程池对拒绝任务(无线程可用)的处理策略 -->
-		<property name="rejectedExecutionHandler">
-			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
-		</property>
-	</bean>
-	
-	<!-- sharding-jdbc配置 -->
-	<import resource="classpath*:/config/spring_sharding_jdbc.xml" />
-	<!-- 一些数据配置信息 -->
-	<import resource="classpath*:/config/spring_data.xml" />
 </beans>

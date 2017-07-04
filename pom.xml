@@ -98,11 +98,6 @@
             <version>1.0.2</version>
         </dependency>
         <dependency>
-            <groupId>com.dangdang.ibatis3</groupId>
-            <artifactId>ibatis3-spring-support</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
             <groupId>c3p0</groupId>
             <artifactId>c3p0</artifactId>
             <version>0.9.1.2</version>
@@ -141,11 +136,6 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.7</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -258,7 +248,7 @@
     </dependencies>
 
     <build>
-        <finalName>media-cms</finalName>
+        <finalName>business-app</finalName>
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
