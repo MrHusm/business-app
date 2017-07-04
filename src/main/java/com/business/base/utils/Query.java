@@ -1,4 +1,4 @@
-package com.personal.business.base.utils;
+package com.business.base.utils;
 
 /**
  * @author hushengmeng

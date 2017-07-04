@@ -1,4 +1,4 @@
-package com.personal.business.ucenter.controller;
+package com.business.ucenter.controller;
 
 /**
  * @author hushengmeng

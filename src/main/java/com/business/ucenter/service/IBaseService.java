@@ -1,8 +1,8 @@
-package com.personal.business.ucenter.service;
+package com.business.ucenter.service;
 
-import com.personal.business.base.utils.PageFinder;
-import com.personal.business.base.utils.Query;
-import com.personal.business.ucenter.dao.IBaseDao;
+import com.business.base.utils.Query;
+import com.business.base.utils.PageFinder;
+import com.business.ucenter.dao.IBaseDao;
 
 import java.io.Serializable;
 import java.util.List;

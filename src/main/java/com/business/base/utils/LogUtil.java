@@ -3,7 +3,7 @@
  * All Rights Reserved.
  * @version 1.0  2014-6-12 上午10:23:43  by 王星皓（wangxinghao@dangdang.com）创建
  */
-package com.personal.business.base.utils;
+package com.business.base.utils;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

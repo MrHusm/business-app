@@ -24,8 +24,16 @@
         <processorPath useClasspath="true" />
         <module name="personal-cms" />
       </profile>
+      <profile default="false" name="Annotation profile for business-app" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="business-app" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="business-app" target="1.6" />
       <module name="personal-cms" target="1.6" />
     </bytecodeTargetLevel>
   </component>
