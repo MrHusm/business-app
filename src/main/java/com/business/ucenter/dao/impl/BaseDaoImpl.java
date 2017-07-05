@@ -28,10 +28,10 @@ import java.util.Map;
 @Repository
 public abstract class BaseDaoImpl<T> implements IBaseDao<T> {
 
-	@Resource(name = "ucenter_sqlSession")
+	@Resource(name = "master_sqlSession")
 	private SqlSessionTemplate sqlSession;
 
-	@Resource(name = "ucenter_sqlSession")
+	@Resource(name = "master_sqlSession")
 	private SqlSessionTemplate sqlSessionQurey;
 
 	protected SqlSessionTemplate getSqlSessionQueryTemplate(){
