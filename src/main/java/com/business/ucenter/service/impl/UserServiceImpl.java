@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 /**
  * Created by hushengmeng on 2017/7/4.
  */
-@Service
+@Service(value="userService")
 public class UserServiceImpl extends BaseServiceImpl<User, Long>  implements IUserService {
 
     @Resource(name="userDao")
