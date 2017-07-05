@@ -15,8 +15,8 @@
 	</settings>
     
     <plugins>
-		<plugin interceptor="com.ibatis3.dialect.OffsetLimitInterceptor">
-			<property name="dialectClass"  value="com.ibatis3.dialect.MySQLDialect" />
+		<plugin interceptor="com.business.base.dialect.OffsetLimitInterceptor">
+			<property name="dialectClass"  value="com.business.base.dialect.MySQLDialect" />
 		</plugin>
 	</plugins>
 	
