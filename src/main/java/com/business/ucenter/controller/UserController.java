@@ -30,7 +30,7 @@ public class UserController extends BaseController {
     public String loginSubmit(Model model, User user, String captcha) {
         System.out.println("1111111111");
         logger.error("2222222");
-        User u = userService.findMasterById(1L);
+        //User u = userService.findMasterById(1L);
         return "main";
     }
 }
