@@ -96,7 +96,7 @@
 	<!-- 配置事物数据库 -->
 	<bean id="business_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="business_dataSource" />
-		<property name="configLocation" value="classpath:sql-map-config.xml" />
+		<property name="configLocation" value="classpath:config/sql-map-config.xml" />
 		<property name="mapperLocations" value="classpath*:sqlmap/*/*.xml" />
 	</bean>
 
@@ -106,14 +106,10 @@
 
 
 	
-
-	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="business_dataSource"/>
     </bean>
     
-
-
 
 	<!-- 文件上传配置 -->
 	<bean id="filterMultipartResolver"
