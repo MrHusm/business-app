@@ -1,8 +1,8 @@
-package com.business.ucenter.dao;
+package com.business.base.dao;
 
 
-import com.business.base.utils.Query;
 import com.business.base.utils.PageFinder;
+import com.business.base.utils.Query;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 

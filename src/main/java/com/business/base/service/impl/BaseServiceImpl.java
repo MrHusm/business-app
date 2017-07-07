@@ -1,11 +1,11 @@
-package com.business.ucenter.service.impl;
+package com.business.base.service.impl;
 
 
-import com.business.base.utils.Query;
-import com.business.ucenter.service.IBaseService;
+import com.business.base.dao.IBaseDao;
+import com.business.base.service.IBaseService;
 import com.business.base.utils.LogUtil;
 import com.business.base.utils.PageFinder;
-import com.business.ucenter.dao.IBaseDao;
+import com.business.base.utils.Query;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

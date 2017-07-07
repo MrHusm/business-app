@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="/Public/Home/css/tool_calendar.css" />
     <link rel="stylesheet" type="text/css" href="/Public/Home/css/toolTop.css" />
     <script type="text/javascript" src="/Public/Home/js/locationsj.js"></script>
+    <script type="text/javascript" src="http://www.tianqi.com/static/tqgg/gg.js"></script>
     <script type="text/javascript" src="/Public/Home/js/calender_wnl.js"></script>
     <script type="text/javascript" language="javascript" src="/Public/Home/js/gg.js"></script>
     <SCRIPT language="JavaScript">
@@ -68,6 +69,10 @@
         <div id="holiday" style="display:none;background-color:#fff;"></div>
         <!-- 使整个日历居中显示的 div add by wuzhq-->
         <div id="middle" style="left: 441px;">
+            <div style="left: 40px;" class="rings"></div>
+            <div style="left: 188px;" class="rings"></div>
+            <div style="left: 337px;" class="rings"></div>
+            <div style="left: 485px;" class="rings"></div>
             <div id="cal_container" class="cal_container">
                 <div id="cal_body">
                     <div id="cal_down">
@@ -97,6 +102,10 @@
                                 </div>
                             </div>
                             <div id="mainCal"></div>
+                            <div class="desc">
+                                <p>(1) 鼠标移动到某个日期格可以查看当日详情</p>
+                                <p>(2) <span class="tradition">红色</span>表示农历传统节日，<span class="international">绿色</span>表示公众/国际节日，<span class="solarterms">蓝色</span>表示24节气日</p>
+                            </div>
                         </div>
                         <div class="cal_downright">
                             <div class="cal_downright_bar">
@@ -104,6 +113,7 @@
                                     <div id="beijingtime" class="top_bar_text">北京时间</div>
                                     <div id="top_bar_time" class="top_bar_text"></div>
                                 </div>
+                                <p><a href="http://time.tianqi.com/" target="_blank" title="时间校对">时间校对</a></p>
                             </div>
                             <div id="cal_rightboard">
                                 <div class="current_date_detail clearfix">
@@ -120,11 +130,12 @@
                                             <p id="chinaDay" class="chinaDay"></p>
                                             <p><span id="chinaDay2" class="chinaDay"></span><span id="chinaDay3" class="chinaDay"></span></p>
                                         </div>
+                                        <a href="javascript:copyInfo();" class="copy">复制今日详情</a>
                                     </div>
                                     <div class="festival_list" id="festival_list"><a href="">立春</a><em>|</em><a href="">情人节</a><em>|</em><a href=""> 数九:七九第一天</a></div>
                                 </div>
                                 <div class="date_mod">
-                                    <div class="hd"><h4>今日黄历<a href="../../Public/Home/html/huanglijieshi.html" target="_blank">黄历名词解释<i></i></a></h4></div>
+                                    <div class="hd"><h4>今日黄历<a href="../../Public/Home/html/huanglijieshi.html" target="_blank">黄历名词解释<i></i></a></h4><a class="more" id="huangli_more" href="" target="_blank">更多&gt;&gt;</a></div>
                                     <div id="YJdiv" class="bd">
                                         <div class="inner">
                                             <div class="inner1">
@@ -174,8 +185,10 @@
                     </div>
                 </div>
             </div>
+
             <!-- 使整个日历居中显示的 div end-->
         </div>
+    </div>
     </div>
 </div>
 
@@ -200,10 +213,13 @@
 </div>
 <!-- 万年历鼠标移动层 -->
 
+
 <!-- foot -->
-</body>
 
 <script type="text/javascript" src="/Public/Home/js/jquery-1.js"></script>
+</body>
+
+
 <script type="text/javascript" src="/Public/Home/js/json.js"></script>
 <script type="text/javascript" src="/Public/Home/js/calendarObj.js"></script>
 <script type="text/javascript" src="/Public/Home/js/workTime.js"></script>
@@ -213,9 +229,73 @@
 <script type="text/javascript" src="/Public/Home/js/makeCal.js"></script>
 <script type="text/javascript" src="/Public/Home/js/huangli.js"></script>
 <script type="text/javascript">
+
     $(document).ready(function(){
+
         calendarHandler.init(null);
+
         makeCal.init();
+
     });
+
+    function copyInfo(){
+
+        if (window.clipboardData) {
+
+            var luck=$("#luck_yi").html();
+
+            luck=luck.split(/<\/em>/i);
+
+            var yi='';
+
+            var reg=new RegExp(">.*?<",'im');
+
+            for(i in luck){
+
+                luck[i].match(/"huangliinfo\('(.*)',this\)"/i);
+
+                yi+=(RegExp.$1)+'  ';
+
+            }
+
+            var bad=$("#bad_ji").html();
+
+            bad=bad.split(/<\/em>/i);
+
+            var  ji='';
+
+            for(i in bad){
+
+                luck[i].match(/"huangliinfo\('(.*)',this\)"/i);
+
+                ji+=(RegExp.$1)+'  ';
+
+            }
+
+            var text = $("#MonthStr").text()+$("#right_big_date").text()+"日 "+$("#gregorianDayStr").text();
+
+            text += "\n"+$("#chinaDay").text()+" \n "+$("#chinaDay2").text()+' '+$("#chinaDay3").text();
+
+            text += "\n宜："+yi+"\n忌："+ji;
+
+            text += "\n"+window.location.href;
+
+            window.clipboardData.setData("Text", text);
+
+            text=window.clipboardData.getData("Text");
+
+            if(text.length!=0){
+
+                $("#copy_pop_box").show();
+
+            }
+
+        }else{
+
+            alert("此功能仅支持IE内核浏览器！");
+
+        }
+
+    }
 </script>
 </html>

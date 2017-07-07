@@ -1,42 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="UserMapper">
-    <resultMap id="BaseResultMap" type="com.business.ucenter.model.User">
-        <id column="ID" property="id" jdbcType="BIGINT" />
-        <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="sex" property="sex" jdbcType="INTEGER" />
+<mapper namespace="HistoryTodayMapper">
+    <resultMap id="BaseResultMap" type="com.business.portal.model.HistoryToday">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="LONGVARCHAR" />
+        <result column="day" property="day" jdbcType="VARCHAR" />
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     </resultMap>
     <sql id="Base_Where">
-        <if test="id != null"> and ID= #{id}</if>
-        <if test="name != null and name !=''"> and name= #{name}</if>
-        <if test="sex != null"> and sex= #{sex}</if>
+        <if test="id != null"> and id= #{id}</if>
+        <if test="title != null and title !=''"> and title= #{title}</if>
+        <if test="content != null and content !=''"> and content= #{content}</if>
+        <if test="day != null and day !=''"> and day= #{day}</if>
     </sql>
     <sql id="Base_Column_List">
-        id ,name,sex,create_date,update_date
+        id ,title,content,day,create_date,update_date
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List" />
-        from user
+        from history_today
         where
         ID = #{id,jdbcType=BIGINT}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete from user
+        delete from history_today
         where
         ID = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insertSelective" parameterType="com.business.ucenter.model.User">
-        insert into user
+    <insert id="insertSelective" parameterType="com.business.portal.model.HistoryToday">
+        insert into history_today
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">ID,</if>
-            <if test="name != null and name !=''">name,</if>
-            <if test="sex != null">sex,</if>
+            <if test="title != null and title !=''">title,</if>
+            <if test="content != null and content !=''">content,</if>
+            <if test="day != null and day != ''">day,</if>
             <if test="createDate != null">create_date,</if>
             <if test="updateDate != null">update_date,</if>
         </trim>
@@ -44,11 +47,14 @@
             <if test="id != null">
                 #{id,jdbcType=BIGINT},
             </if>
-            <if test="name != null and name !=''">
-                #{name,jdbcType=VARCHAR},
+            <if test="title != null and title !=''">
+                #{title,jdbcType=VARCHAR},
             </if>
-            <if test="sex != null">
-                #{sex,jdbcType=INTEGER},
+            <if test="content != null and content != ''">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="day != null and day != ''">
+                #{day,jdbcType=VARCHAR},
             </if>
             <if test="createDate != null">
                 #{createDate,jdbcType=TIMESTAMP},
@@ -59,14 +65,17 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.business.ucenter.model.User">
-        update user
+    <update id="updateByPrimaryKeySelective" parameterType="com.business.portal.model.HistoryToday">
+        update history_today
         <set>
-            <if test="name != null and name !=''">
-                name= #{name,jdbcType=VARCHAR},
+            <if test="title != null and title !=''">
+                title= #{title,jdbcType=VARCHAR},
             </if>
-            <if test="sex != null">
-                sex= #{sex,jdbcType=INTEGER},
+            <if test="content != null and content !=''">
+                content= #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="day != null and day !=''">
+                day= #{day,jdbcType=VARCHAR},
             </if>
             <if test="createDate != null">
                 create_date= #{create_date,jdbcType=TIMESTAMP},
@@ -83,17 +92,17 @@
     <select id="getAll" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List" />
-        from user where 1=1
+        from history_today where 1=1
         <include refid="Base_Where" />
     </select>
     <select id="pageCount" resultType="java.lang.Integer" parameterType="map">
-        select count(1) from user where 1=1
+        select count(1) from history_today where 1=1
         <include refid="Base_Where" />
     </select>
     <select id="pageData" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List" />
-        from user where 1=1
+        from history_today where 1=1
         <include refid="Base_Where" />
         order by create_date desc
     </select>

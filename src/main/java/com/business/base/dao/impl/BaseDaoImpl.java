@@ -1,9 +1,9 @@
-package com.business.ucenter.dao.impl;
+package com.business.base.dao.impl;
 
 
+import com.business.base.dao.IBaseDao;
 import com.business.base.utils.PageFinder;
 import com.business.base.utils.Query;
-import com.business.ucenter.dao.IBaseDao;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;

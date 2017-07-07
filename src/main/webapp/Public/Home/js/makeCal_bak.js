@@ -32,6 +32,7 @@ var calander = {
         var today = new Date(currentDate).format("yyyy-MM-dd");
         var day = today.split("-");
         day = day[1] + day[2];
+        $('#huangli_more').attr('href', 'huangli.html?date=' + currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate());
         //var fileName = "http://tools.2345.com/his_short/" + day + ".js";
         //loadJs(fileName)
         /*var _tianqiUrl = 'http://www.tianqi.com/index.php?c=history&md=';
@@ -386,6 +387,7 @@ var calander = {
                 day = day[1] + day[2];
                 //var fileName = "http://tools.2345.com/his_short/" + day + ".js";
                 //loadJs(fileName);
+                $('#huangli_more').attr('href', 'huangli.html?date=' + currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate());
                 //$('#festival').text('假期安排');
                 showingToday = false
             });
@@ -447,6 +449,7 @@ var calander = {
                 day = day[1] + day[2];
                 //var fileName = "http://tools.2345.com/his_short/" + day + ".js";
                 //loadJs(fileName);
+                $('#huangli_more').attr('href', 'huangli.html?date=' + currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate());
                 $('#festival').text('假期安排');
                 showingToday = false
             });
@@ -473,6 +476,7 @@ var calander = {
                 }
                 //var fileName = "http://tools.2345.com/his_short/" + day + ".js";
                 //loadJs(fileName);
+                $('#huangli_more').attr('href', 'huangli.html?date=' + data[0] + '-' + data[1] + '-' + data[2]);
                 showingToday = false
             });
         $('body').bind('click',
@@ -604,6 +608,7 @@ var calander = {
                 day = day[1] + day[2];
                 //var fileName = "http://tools.2345.com/his_short/" + day + ".js";
                 //loadJs(fileName);
+                $('#huangli_more').attr('href', 'huangli.html?date=' + currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate())
             })
     },
     makeHuangli: function(date) {
@@ -1012,6 +1017,7 @@ var calander = {
         day = day[1] + day[2];
         //var fileName = "http://tools.2345.com/his_short/" + day + ".js";
         //loadJs(fileName);
+        $('#huangli_more').attr('href', 'huangli.html?date=' + year + '-' + (month + 1) + '-' + date);
         showingToday = false;
         makeCal.makeHuangli(currentDate)
     },
@@ -1050,6 +1056,7 @@ var calander = {
         day = day[1] + day[2];
         //var fileName = "http://tools.2345.com/his_short/" + day + ".js";
         //loadJs(fileName);
+        $('#huangli_more').attr('href', 'huangli.html?date=' + year + '-' + (month + 1) + '-' + date);
         showingToday = false;
         makeCal.makeHuangli(currentDate)
     },
@@ -1057,6 +1064,7 @@ var calander = {
         currentDate = new Date();
         makeCal.pareData(currentDate);
         makeCal.showCal();
+        $('#festival').text('假期安排');
         $('#year_select').attr('value', currentDate.getFullYear());
         $('#month_select').attr('value', currentDate.getMonth());
         var today = new Date(currentDate).format("yyyy-MM-dd");
@@ -1064,6 +1072,7 @@ var calander = {
         day = day[1] + day[2];
         //var fileName = "http://tools.2345.com/his_short/" + day + ".js";
         //loadJs(fileName);
+        $('#huangli_more').attr('href', 'huangli.html?date=' + currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate());
         showingToday = true;
         makeCal.makeHuangli(currentDate)
     },
@@ -1356,7 +1365,7 @@ function getFullDateStr(date) {
 function showYiAndJi(date) {
     var year = date.substr(0, 4);
     //var jsFile = "api/app/yjcs/" + year + ".js";
-    var jsFile = "/Public/Home/js/api/yjs/" + year + ".js";
+    var jsFile = "Public/Home/js/api/yjs/" + year + ".js";
     loadJs(jsFile)
 }
 function lmanac_2345() {
