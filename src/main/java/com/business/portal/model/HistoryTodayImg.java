@@ -46,7 +46,7 @@ public class HistoryTodayImg {
         return historyId;
     }
 
-    public void setHistoryId(Long history_id) {
+    public void setHistoryId(Long historyId) {
         this.historyId = historyId;
     }
 

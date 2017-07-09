@@ -29,7 +29,6 @@ public class UserController extends BaseController {
     @RequestMapping("index")
     public String loginSubmit(Model model, User user, String captcha) {
         User u = userService.findMasterById(1L);
-        System.out.println(u.getName());
         return "main";
     }
 }
