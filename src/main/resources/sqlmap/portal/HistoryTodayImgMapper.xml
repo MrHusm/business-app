@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="com.business.portal.model.HistoryTodayImg">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="title" property="title" jdbcType="VARCHAR" />
-        <result column="file_name" property="file_name" jdbcType="VARCHAR" />
+        <result column="file_name" property="fileName" jdbcType="VARCHAR" />
         <result column="index" property="index" jdbcType="INTEGER" />
         <result column="history_id" property="historyId" jdbcType="BIGINT" />
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />

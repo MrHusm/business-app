@@ -1,6 +1,7 @@
 package com.business.portal.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author hushengmeng
@@ -24,6 +25,8 @@ public class HistoryToday {
      * 日期
      */
     private String day;
+
+    private List<HistoryTodayImg> imgs;
 
     private Date createDate;
 
@@ -75,5 +78,13 @@ public class HistoryToday {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public List<HistoryTodayImg> getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(List<HistoryTodayImg> imgs) {
+        this.imgs = imgs;
     }
 }
