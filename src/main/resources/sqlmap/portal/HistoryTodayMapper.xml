@@ -9,31 +9,33 @@
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
         <collection property="imgs" ofType="com.business.portal.model.HistoryTodayImg">
-            <id column="id" property="id" jdbcType="BIGINT" />
-            <result column="title" property="title" jdbcType="VARCHAR" />
+            <id column="img_id" property="id" jdbcType="BIGINT" />
+            <result column="img_title" property="title" jdbcType="VARCHAR" />
             <result column="file_name" property="fileName" jdbcType="VARCHAR" />
             <result column="index" property="index" jdbcType="INTEGER" />
             <result column="history_id" property="historyId" jdbcType="BIGINT" />
-            <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-            <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+            <result column="img_create_date" property="createDate" jdbcType="TIMESTAMP" />
+            <result column="img_update_date" property="updateDate" jdbcType="TIMESTAMP" />
         </collection>
     </resultMap>
     <sql id="Base_Where">
-        <if test="id != null"> and id= #{id}</if>
-        <if test="title != null and title !=''"> and title= #{title}</if>
-        <if test="content != null and content !=''"> and content= #{content}</if>
-        <if test="day != null and day !=''"> and day= #{day}</if>
+        <if test="id != null"> and t.id= #{id}</if>
+        <if test="title != null and title !=''"> and t.title= #{title}</if>
+        <if test="content != null and content !=''"> and t.content= #{content}</if>
+        <if test="day != null and day !=''"> and t.day= #{day}</if>
     </sql>
     <sql id="Base_Column_List">
-        id ,title,content,day,create_date,update_date
+        t.id ,t.title,t.content,t.day,t.create_date,t.update_date,
+        i.id as img_id,i.title as img_title,i.file_name,i.index,i.history_id,
+        i.create_date as img_create_date,i.update_date as img_update_date
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List" />
-        from history_today
+        from history_today t
         where
-        ID = #{id,jdbcType=BIGINT}
+        t.id = #{id,jdbcType=BIGINT}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
@@ -101,19 +103,19 @@
     <select id="getAll" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List" />
-        from history_today where 1=1
+        from history_today t where 1=1
         <include refid="Base_Where" />
     </select>
     <select id="pageCount" resultType="java.lang.Integer" parameterType="map">
-        select count(1) from history_today where 1=1
+        select count(1) from history_today t where 1=1
         <include refid="Base_Where" />
     </select>
     <select id="pageData" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List" />
-        from history_today where 1=1
+        from history_today t left join history_today_img i on t.id=i.history_id where 1=1
         <include refid="Base_Where" />
-        order by create_date desc
+        order by t.create_date desc
     </select>
 
 </mapper>
