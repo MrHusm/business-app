@@ -1,12 +1,19 @@
 package com.business.portal.controller;
 
+import com.business.base.contants.ErrorCodeEnum;
 import com.business.base.controller.BaseController;
+import com.business.base.utils.JsonResultSender;
+import com.business.base.utils.PageFinder;
+import com.business.base.utils.Query;
+import com.business.base.utils.ResultSender;
 import com.business.portal.model.HistoryToday;
 import com.business.portal.model.HistoryTodayImg;
 import com.business.portal.service.IHistoryTodayImgService;
 import com.business.portal.service.IHistoryTodayService;
 import com.business.ucenter.controller.UserController;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,13 +22,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import java.io.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -46,7 +62,7 @@ public class HistoryTodayController extends BaseController {
     @RequestMapping("climbData")
     public void climbData() {
         String baseUrl = "http://www.people.com.cn/GB/historic/";
-        for(int i = 4; i < 13; i++){
+        for(int i = 1; i < 13; i++){
             for(int j = 1; j < 32; j++){
                 String day = "";
                 if(i < 10){
@@ -70,19 +86,24 @@ public class HistoryTodayController extends BaseController {
                     Elements links = doc.select("td.t14l14 > a");
                     for (Element link : links) {
                         String linkHref = link.attr("abs:href");
-                        String linkText = link.text();
-                        Document secondDoc = Jsoup.connect(linkHref)
-                                .userAgent(USER_AGENT) // 设置 User-Agent
-                                .cookie("auth", "token") // 设置 cookie
-                                .timeout(10000)          // 设置连接超时时间
-                                .get();                 // 使用 POST 方法访问 URL
+                        //创建请求
+                        URL url = new URL(linkHref);
+                        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+                        connection.setRequestMethod("GET");
+                        connection.setUseCaches(Boolean.FALSE);
+                        connection.addRequestProperty("Connection", "close");
+                        connection.setConnectTimeout(8000);
+                        connection.setReadTimeout(8000);
+                        connection.addRequestProperty("Cookie","你的Cookies" );
+                        //开始请求
+                        Document secondDoc = Jsoup.parse(connection.getInputStream(), "GBK", linkHref);
+
                         Element title = secondDoc.select("td.FontMax > b").first();
                         Element content = secondDoc.select("td.content").first();
                         Date now = new Date();
                         HistoryToday historyToday = new HistoryToday();
                         historyToday.setTitle(title.html());
                         historyToday.setContent(content.html());
-
                         historyToday.setDay(day);
                         historyToday.setCreateDate(now);
                         historyToday.setUpdateDate(now);
@@ -118,8 +139,6 @@ public class HistoryTodayController extends BaseController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
             }
         }
     }
@@ -152,8 +171,88 @@ public class HistoryTodayController extends BaseController {
         return flag;
     }
 
+
+    /**
+     * 获取历史的今天数据列表
+     * @param start
+     * @param count
+     * @param day
+     * @return
+     */
+    @RequestMapping("historyTodayList")
+    public void getHistoryTodayList(HttpServletResponse response,HttpServletRequest request,Integer start,Integer count,String day) {
+        ResultSender sender = JsonResultSender.getInstance();
+        try{
+            Query query = new Query();
+            if(start == null){
+                start = 1;
+            }
+            query.setPage(start);
+            if(count == null || count < 0){
+                query.setPageSize(Integer.MAX_VALUE);
+            }else{
+                query.setPageSize(count);
+            }
+            HistoryToday historyToday = new HistoryToday();
+            if(StringUtils.isBlank(day)){
+                SimpleDateFormat df = new SimpleDateFormat("MMdd");//设置日期格式
+                day = df.format(new Date());
+            }
+            historyToday.setDay(day);
+            PageFinder<HistoryToday> historyTodays = historyTodayService.findPageFinderObjs(historyToday,query);
+            if(CollectionUtils.isNotEmpty(historyTodays.getData())){
+                for(HistoryToday history :  historyTodays.getData()){
+                    List<HistoryTodayImg> imgs = this.historyTodayImgService.findListByParams("historyId",history.getId());
+                    if(CollectionUtils.isNotEmpty(imgs)){
+                        for(HistoryTodayImg img : imgs){
+                            img.setFileName("http://120.25.125.138:8081/media/"+img.getFileName());
+                        }
+                    }
+                    history.setImgs(imgs);
+                }
+                sender.put("historyTodays",historyTodays.getData());
+
+                sender.send(response);
+            }else{
+                sender.fail(ErrorCodeEnum.ERROR_CODE_10007.getErrorCode(),
+                        ErrorCodeEnum.ERROR_CODE_10007.getErrorMessage(), response);
+                return;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error("系统错误："+ request.getRequestURL());
+            sender.fail(ErrorCodeEnum.ERROR_CODE_10008.getErrorCode(), ErrorCodeEnum.ERROR_CODE_10008.getErrorMessage(), response);
+        }
+    }
+
+    /**
+     * 根据ID获取历史的今天详情数据
+     * @param model
+     * @param id
+     * @return
+     */
+    @RequestMapping("historyTodayDetail")
+    public String getHistoryTodayDetail(Model model,@RequestParam(value="id",required=true)String id) {
+        HistoryToday historyToday = this.historyTodayService.get(Long.parseLong(id));
+        model.addAttribute("historyToday",historyToday);
+        return "/portal/history_today_detail";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
-        //climbData();
-        System.out.println(HistoryTodayController.class.getClassLoader().getResource("/media").getPath());
+        HistoryTodayController t = new HistoryTodayController();
+        t.climbData();
     }
 }

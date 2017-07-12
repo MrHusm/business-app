@@ -4,10 +4,13 @@
     <resultMap id="BaseResultMap" type="com.business.portal.model.HistoryToday">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="title" property="title" jdbcType="VARCHAR" />
-        <result column="content" property="content" jdbcType="BLOB" />
+        <result column="content" property="content" typeHandler="com.business.base.handler.MyBlobTypeHandler" />
         <result column="day" property="day" jdbcType="VARCHAR" />
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="WithImgsMap" type="com.business.portal.model.HistoryTodayImg" extends="BaseResultMap">
         <collection property="imgs" ofType="com.business.portal.model.HistoryTodayImg">
             <id column="img_id" property="id" jdbcType="BIGINT" />
             <result column="img_title" property="title" jdbcType="VARCHAR" />
@@ -18,22 +21,28 @@
             <result column="img_update_date" property="updateDate" jdbcType="TIMESTAMP" />
         </collection>
     </resultMap>
+
     <sql id="Base_Where">
         <if test="id != null"> and t.id= #{id}</if>
         <if test="title != null and title !=''"> and t.title= #{title}</if>
         <if test="content != null and content !=''"> and t.content= #{content}</if>
         <if test="day != null and day !=''"> and t.day= #{day}</if>
     </sql>
+
     <sql id="Base_Column_List">
-        t.id ,t.title,t.content,t.day,t.create_date,t.update_date,
+        t.id ,t.title,t.content,t.day,t.create_date,t.update_date
+    </sql>
+
+    <sql id="with_img_List">
         i.id as img_id,i.title as img_title,i.file_name,i.index,i.history_id,
         i.create_date as img_create_date,i.update_date as img_update_date
     </sql>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" resultMap="WithImgsMap" parameterType="java.lang.String">
         select
-        <include refid="Base_Column_List" />
-        from history_today t
+        <include refid="Base_Column_List" />,
+        <include refid="with_img_List" />
+        from history_today t left join history_today_img i on t.id=i.history_id
         where
         t.id = #{id,jdbcType=BIGINT}
     </select>
@@ -62,7 +71,7 @@
                 #{title,jdbcType=VARCHAR},
             </if>
             <if test="content != null and content != ''">
-                #{content,jdbcType=BLOB},
+                #{content,jdbcType=LONGVARCHAR},
             </if>
             <if test="day != null and day != ''">
                 #{day,jdbcType=VARCHAR},
@@ -83,7 +92,7 @@
                 title= #{title,jdbcType=VARCHAR},
             </if>
             <if test="content != null and content !=''">
-                content= #{content,jdbcType=BLOB},
+                content= #{content,jdbcType=LONGVARCHAR},
             </if>
             <if test="day != null and day !=''">
                 day= #{day,jdbcType=VARCHAR},
@@ -113,9 +122,9 @@
     <select id="pageData" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List" />
-        from history_today t left join history_today_img i on t.id=i.history_id where 1=1
+        from history_today t where 1=1
         <include refid="Base_Where" />
-        order by t.create_date desc
+        order by t.id asc
     </select>
 
 </mapper>

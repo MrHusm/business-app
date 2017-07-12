@@ -13,9 +13,9 @@
     <sql id="Base_Where">
         <if test="id != null"> and id= #{id}</if>
         <if test="title != null and title !=''"> and title= #{title}</if>
-        <if test="fileName != null and fileName !=''"> and fileName= #{fileName}</if>
+        <if test="fileName != null and fileName !=''"> and file_name= #{fileName}</if>
         <if test="index != null"> and index= #{index}</if>
-        <if test="historyId != null"> and historyId= #{historyId}</if>
+        <if test="historyId != null"> and history_id= #{historyId}</if>
     </sql>
     <sql id="Base_Column_List">
         id ,title,file_name,`index`,history_id,create_date,update_date
