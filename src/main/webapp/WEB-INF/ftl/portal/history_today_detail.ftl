@@ -21,16 +21,16 @@
         <#if (historyToday.imgs?size >0)>
             <p>
             <#list historyToday.imgs as img>
-                <#if  (historyToday.content?length >100*(img_index+1))>
+                <#if  (historyToday.content?length >200*(img_index+1))>
                     <div class="am-gallery-item">
                         <img src="http://120.25.125.138:8081/media/${img.fileName}">
                         <font size="2" class="am-gallery-title am-center" style="text-align: center">${img.title}</font>
                     </div>
-                    ${historyToday.content?substring(100 * img_index,100 * (img_index+1))}
+                    ${historyToday.content?substring(200 * img_index,200 * (img_index+1))}
                 </#if>
             </#list>
-            <#if (historyToday.content?length > (100 * historyToday.imgs?size))>
-                ${historyToday.content?substring(100 * (historyToday.imgs?size))}
+            <#if (historyToday.content?length > (200 * historyToday.imgs?size))>
+                ${historyToday.content?substring(200 * (historyToday.imgs?size))}
             </#if>
             </p>
         <#else>
