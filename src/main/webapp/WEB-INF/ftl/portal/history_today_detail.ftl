@@ -22,7 +22,10 @@
             <p>
             <#list historyToday.imgs as img>
                 <#if  (historyToday.content?length >100*(img_index+1))>
-                    <p><img src="http://120.25.125.138:8081/media/${img.fileName}"></p>
+                    <div class="am-gallery-item">
+                        <img src="http://120.25.125.138:8081/media/${img.fileName}">
+                        <font size="2" class="am-gallery-title am-center" style="text-align: center">${img.title}</font>
+                    </div>
                     ${historyToday.content?substring(100 * img_index,100 * (img_index+1))}
                 </#if>
             </#list>

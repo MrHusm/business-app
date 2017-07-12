@@ -132,7 +132,7 @@ content: " ";display: block;margin-top: -7px;margin-left: -3px; }
 .article_nr_title {    font-size: 24px;font-weight: 600;margin-bottom: 20px; text-align: left;}
 .article_nr_content { padding-top: 10px; font-size: 17px;}
 .am-paragraph-default p { font-size: 17px; line-height: 1.8;    margin-bottom: 20px;}
-.am-paragraph-default img { max-width:100%; border:none; margin: 0; padding: 0;}
+.am-paragraph-default img { max-width:100%; border:none; padding: 0;}
 .article_nr_more {  padding: 25px 0 25px;margin-top: 25px;border-top: solid 1px #f4f4f4;}
 .article_nr_more_r {float: right;color: #666666; font-size: 12px;-webkit-transition: all 0.3s ease;transition: all 0.3s ease;white-space: nowrap;}
 .article_nr_more_r .am-icon-btn {width: 28px;height: 28px;margin-left: 5px;border-radius: 50%;display: inline-block;color: #ffffff;line-height: 28px;text-align: center;font-size: 14px;-webkit-transition: all 0.3s ease;transition: all 0.3s ease;opacity: 1;

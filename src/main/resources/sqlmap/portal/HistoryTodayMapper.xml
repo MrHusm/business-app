@@ -10,7 +10,7 @@
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     </resultMap>
 
-    <resultMap id="WithImgsMap" type="com.business.portal.model.HistoryTodayImg" extends="BaseResultMap">
+    <resultMap id="WithImgsMap" type="com.business.portal.model.HistoryToday" extends="BaseResultMap">
         <collection property="imgs" ofType="com.business.portal.model.HistoryTodayImg">
             <id column="img_id" property="id" jdbcType="BIGINT" />
             <result column="img_title" property="title" jdbcType="VARCHAR" />

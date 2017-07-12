@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>日历</title>
+    <title>历史的今天</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="/css/amazeui.min.css">
@@ -56,7 +56,6 @@
                         </#list>
                     </#if>
                 </ul>
-                <div class="am_news_load"><span><i  class="am-icon-spinner am-icon-spin"></i> 更多萌宠照片</span></div>
             </div>
         </div>
     </div>
