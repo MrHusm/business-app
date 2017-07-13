@@ -14,15 +14,15 @@
 </head>
 <body>
 <div data-am-widget="tabs" class="am-tabs am-tabs-d2 am_news_tab">
-    <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" style="border-bottom: 0px; margin-bottom: -10px">
-        <h2 class="am-titlebar-title ">
-            历史的今天
-        </h2>
-    </div>
 
     <div class="am-tabs-bd">
         <div data-tab-panel-0 class="am-tab-panel am-active">
             <div class="am-list-news-bd am_news_list_all">
+                <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" style="border-bottom: 0px; margin-bottom: -10px">
+                    <h2 class="am-titlebar-title ">
+                        历史的今天
+                    </h2>
+                </div>
                 <ul class="am-list">
                     <!--缩略图在标题左边-->
                     <#if pageFinder.data??>
