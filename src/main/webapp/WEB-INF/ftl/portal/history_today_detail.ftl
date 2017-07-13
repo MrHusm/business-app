@@ -24,7 +24,7 @@
                 <#if  (historyToday.content?length >200*(img_index+1))>
                     <div class="am-gallery-item">
                         <img src="http://120.25.125.138:8081/media/${img.fileName}">
-                        <font size="2" class="am-gallery-title am-center" style="text-align: center">${img.title}</font>
+                        <font size="2" class="am-gallery-title am-center" style="text-align: center;padding-bottom: 5px">${img.title}</font>
                     </div>
                     ${historyToday.content?substring(200 * img_index,200 * (img_index+1))}
                 </#if>
