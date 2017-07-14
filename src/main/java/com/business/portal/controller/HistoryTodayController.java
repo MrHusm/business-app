@@ -205,7 +205,7 @@ public class HistoryTodayController extends BaseController {
                     List<HistoryTodayImg> imgs = this.historyTodayImgService.findListByParams("historyId",history.getId());
                     if(CollectionUtils.isNotEmpty(imgs)){
                         for(HistoryTodayImg img : imgs){
-                            img.setFileName("http://120.25.125.138:8081/media/"+img.getFileName());
+                            img.setFileName("http://120.25.125.138:8082/media/"+img.getFileName());
                         }
                     }
                     history.setImgs(imgs);

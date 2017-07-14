@@ -32,7 +32,7 @@
                                     <#list historyToday.imgs as img>
                                         <#if img_index == 0>
                                             <div class="am-u-sm-3 am-list-thumb am_list_thumb">
-                                                <img src="http://120.25.125.138:8081/media/${img.fileName}" class="am_news_list_img" alt="${img.title}"/>
+                                                <img src="http://120.25.125.138:8082/media/${img.fileName}" class="am_news_list_img" alt="${img.title}"/>
                                             </div>
                                         </#if>
                                     </#list>
