@@ -13,9 +13,34 @@ public class User {
     private String name;
 
     /**
+     * 别名
+     */
+    private String nickName;
+
+    /**
+     * 密码
+     */
+    private String password;
+
+    /**
      * 性别 1：男 2：女
      */
-    private int sex;
+    private Integer sex;
+
+    /**
+     * 电话
+     */
+    private String tel;
+
+    /**
+     * 0：安卓 1：IOS
+     */
+    private Integer type;
+
+    /**
+     * 客户端生成唯一标识
+     */
+    private String key;
 
     /**
      * 创建时间
@@ -43,12 +68,52 @@ public class User {
         this.name = name;
     }
 
-    public int getSex() {
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Date getCreateDate() {

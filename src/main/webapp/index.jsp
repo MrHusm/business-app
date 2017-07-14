@@ -1,1 +1,1 @@
-<meta http-equiv='refresh'   content='0;url=/login/index.go'>
+<meta http-equiv='refresh'   content='0;url=/user/index.go'>
